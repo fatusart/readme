@@ -82,7 +82,7 @@ Une fenêtre de navigateur s'ouvrira pour vous authentifier.
 ### Étape 3 : Créer le Resource Group
 
 ```bash
-az group create --name CloudQuizFootRG --location uksouth
+az group create --name CloudQuizFootRGR --location francecentral
 ```
 
 > ⚠️ Choisissez une région autorisée par votre abonnement ou des erreurs apparaîtront à l'étape suivante. Régions courantes : `uksouth`, `westeurope`, `francecentral`
@@ -92,7 +92,7 @@ az group create --name CloudQuizFootRG --location uksouth
 ### Étape 4 : Déployer l'infrastructure avec Bicep
 
 ```bash
-az deployment group create --resource-group CloudQuizFootRG --template-file infra/main.bicep
+az deployment group create --resource-group CloudQuizFootRGR --template-file infra/main.bicep
 ```
 
 Cette commande crée automatiquement :
@@ -108,7 +108,7 @@ Cette commande crée automatiquement :
 ### Étape 5 : Récupérer la connection string du Storage
 
 ```bash
-az storage account show-connection-string --name cloudquizfootprojstor --resource-group CloudQuizFootRG --query connectionString -o tsv
+az storage account show-connection-string --name cloudquizfootprostor --resource-group CloudQuizFootRGR --query connectionString -o tsv
 ```
 
 Copiez cette valeur et mettez-la dans `Backend/local.settings.json` :
@@ -149,12 +149,12 @@ Vous devriez voir :
 
 ```bash
 cd ..
-func azure functionapp publish cloudquizfootproj-functions --build local
+func azure functionapp publish cloudquizfootpro-functions --build local
 ```
 
 Après déploiement, vous verrez les URLs :
 ```
-Functions in cloudquizfootproj-functions:
+Functions in cloudquizfootpro-functions:
     generatequiz - https://cloudquizfoot2-functions.azurewebsites.net/api/generatequiz
     getleaderboard - https://cloudquizfoot2-functions.azurewebsites.net/api/getleaderboard
     nextquestion - https://cloudquizfoot2-functions.azurewebsites.net/api/nextquestion
@@ -168,13 +168,13 @@ Functions in cloudquizfootproj-functions:
 Modifiez `frontend/script.js` (ligne 2) :
 
 ```javascript
-const API_BASE_URL = "https://cloudquizfootproj-functions.azurewebsites.net/api";
+const API_BASE_URL = "https://cloudquizfootpro-functions.azurewebsites.net/api";
 ```
 
 Modifiez aussi `frontend/leaderboard.js` (ligne 1) :
 
 ```javascript
-const API = "https://cloudquizfootproj-functions.azurewebsites.net/api";
+const API = "https://cloudquizfootpro-functions.azurewebsites.net/api";
 ```
 
 ---
@@ -184,13 +184,13 @@ const API = "https://cloudquizfootproj-functions.azurewebsites.net/api";
 **Windows PowerShell :**
 ```powershell
 Compress-Archive -Path frontend\* -DestinationPath frontend.zip -Force
-az webapp deploy --resource-group CloudQuizFootRG --name cloudquizfootproj-frontend --src-path frontend.zip --type zip
+az webapp deploy --resource-group CloudQuizFootRGR --name cloudquizfootpro-frontend --src-path frontend.zip --type zip
 ```
 
 **Bash/Linux/Mac :**
 ```bash
 zip -r frontend.zip frontend/*
-az webapp deploy --resource-group CloudQuizFootRG --name cloudquizfootproj-frontend --src-path frontend.zip --type zip
+az webapp deploy --resource-group CloudQuizFootRGR --name cloudquizfootpro-frontend --src-path frontend.zip --type zip
 ```
 
 ---
@@ -200,7 +200,7 @@ az webapp deploy --resource-group CloudQuizFootRG --name cloudquizfootproj-front
 Autorisez le frontend à appeler le backend :
 
 ```bash
-az functionapp cors add --name cloudquizfootproj-functions --resource-group CloudQuizFootRG --allowed-origins "https://cloudquizfootproj-frontend.azurewebsites.net"
+az functionapp cors add --name cloudquizfootpro-functions --resource-group CloudQuizFootRGR --allowed-origins "https://cloudquizfootpro-frontend.azurewebsites.net"
 ```
 
 ---
@@ -211,11 +211,11 @@ az functionapp cors add --name cloudquizfootproj-functions --resource-group Clou
 
 | Composant | URL |
 |-----------|-----|
-| **Frontend** | https://cloudquizfootproj-frontend.azurewebsites.net |
-| **API generatequiz** | https://cloudquizfootproj-functions.azurewebsites.net/api/generatequiz |
-| **API nextquestion** | https://cloudquizfootproj-functions.azurewebsites.net/api/nextquestion |
-| **API getleaderboard** | https://cloudquizfootproj-functions.azurewebsites.net/api/getleaderboard |
-| **API submitresult** | https://cloudquizfootproj-functions.azurewebsites.net/api/submitresult |
+| **Frontend** | https://cloudquizfootpro-frontend.azurewebsites.net |
+| **API generatequiz** | https://cloudquizfootpro-functions.azurewebsites.net/api/generatequiz |
+| **API nextquestion** | https://cloudquizfootpro-functions.azurewebsites.net/api/nextquestion |
+| **API getleaderboard** | https://cloudquizfootpro-functions.azurewebsites.net/api/getleaderboard |
+| **API submitresult** | https://cloudquizfootpro-functions.azurewebsites.net/api/submitresult |
 
 ---
 
@@ -271,7 +271,7 @@ Le fichier `infra/main.bicep` crée toutes les ressources Azure :
 
 ```bicep
 // Paramètres
-param projectName string = 'cloudquizfootproj'
+param projectName string = 'cloudquizfootpro'
 param location string = 'uksouth'
 
 // Ressources créées :
@@ -284,7 +284,7 @@ param location string = 'uksouth'
 
 Pour redéployer l'infrastructure :
 ```bash
-az deployment group create --resource-group CloudQuizFootRG --template-file infra/main.bicep
+az deployment group create --resource-group CloudQuizFootRGR --template-file infra/main.bicep
 ```
 
 ---
@@ -294,7 +294,7 @@ az deployment group create --resource-group CloudQuizFootRG --template-file infr
 Pour supprimer toutes les ressources Azure :
 
 ```bash
-az group delete --name CloudQuizFootRG --yes --no-wait
+az group delete --name CloudQuizFootRGR --yes --no-wait
 ```
 
 ---
